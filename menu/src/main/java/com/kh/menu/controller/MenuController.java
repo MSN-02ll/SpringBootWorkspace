@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,6 +86,7 @@ public class MenuController {
 					array = @ArraySchema(schema = @Schema(implementation = Menu.class))
 					)
 			)
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<List<Menu>> menus(
 			@Parameter(description = "검색필터(type,taste)")
 			@RequestParam HashMap<String,Object> param
@@ -102,6 +104,7 @@ public class MenuController {
 	 *  - /menus/insert (x) => POST + /menus
 	 */
 	@PostMapping("/menus")
+	@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = "Location")
 	public ResponseEntity<Void> insertMenu(
 			@RequestBody MenuPost menu
 			){
@@ -130,6 +133,7 @@ public class MenuController {
  *  */
 
 @GetMapping("/menus/{id}")
+@CrossOrigin(origins = "http://localhost:3000")
 public ResponseEntity<Menu> menuDetail(
 		@PathVariable long id
 		){
@@ -143,6 +147,7 @@ public ResponseEntity<Menu> menuDetail(
 
 //메뉴 수정
 @PutMapping("/menus/{id}")
+@CrossOrigin(origins = "http://localhost:3000")
 public ResponseEntity<Void> updateMenu(
 		@RequestBody MenuPut menu,
 		@PathVariable long id
@@ -168,6 +173,7 @@ public ResponseEntity<Void> updateMenu(
 
 //메뉴 삭제
 @DeleteMapping("/menus/{id}")
+@CrossOrigin(origins = "http://localhost:3000")
 public ResponseEntity<Void> deleteMenu(
 		@PathVariable long id
 		)throws NotFoundException{

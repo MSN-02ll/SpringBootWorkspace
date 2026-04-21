@@ -24,7 +24,7 @@ import com.kh.menu.security.model.dto.AuthDto.LoginRequest;
 import com.kh.menu.security.model.dto.AuthDto.User;
 import com.kh.menu.security.model.provider.JWTProvider;
 import com.kh.menu.security.model.service.AuthService;
-import com.kh.menu.security.model.service.KaKaoService;
+import com.kh.menu.security.model.service.kakaoService;
 import com.kh.menu.security.utils.CookieUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthController {
 	
 	private final AuthService service;
-	private final KaKaoService kaokaoService;
+	private final kakaoService kakaoService;
 	private final JWTProvider jwt;
 	
 	@PostMapping("/login")
@@ -112,6 +112,14 @@ public class AuthController {
 		
 		if(accessToken != null) {
 			//accessToken에 값이 있다면 카카오서비스 로그아웃 요청
+			// 클라이언트의 헤더에서 id값 추출
+			Long userId = jwt.getUserId(accessToken,  ACCESS_COOKIE);
+			
+			// db에서 사용자의 카카오 액서스토큰 조회
+			String kakaoAccessToken = service.getkakaoAccessToken(userId);
+			
+			// 카카오에서 로그아웃 요청처리
+			if(kakaoAccessToken != null) kakaoService.logout(kakaoAccessToken).subscribe();
 		}
 		
 		//로그아웃처리(쿠키 만료처리)

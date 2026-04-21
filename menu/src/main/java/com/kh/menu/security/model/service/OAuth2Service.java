@@ -77,7 +77,10 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
 			Map<String,Object> profile = (Map<String,Object>) kakaoAccount.get("profile");
 			
 			// 데이터베이스에서 회원정보 조회
-			User user = authDao.findUserByEmail(email);
+			//User user = authDao.findUserByEmail(email);
+			Map<String, Object> param = Map.of("provider", provider, "providerId", providerUserId);
+			User user = authDao.findUserByProvider(param);
+			
 			
 			if(user == null) {
 				// 새로운 사용자인 경우 자동회원 가입

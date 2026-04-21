@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 	private final AuthDao authDao;
 	private final PasswordEncoder encoder;
-	private final KaKaoService service;
+	private final kakaoService service;
 	private final JWTProvider jwt;
 	
 	public boolean existsByemail(String email) {
@@ -115,6 +115,10 @@ public class AuthService {
 
 	public User findUserByUserId(Long userId) {
 		return authDao.findUserByUserId(userId);
+	}
+
+	public String getkakaoAccessToken(Long userId) {
+		return authDao.getKakaoAccessToken(userId);
 	}
 }
 
